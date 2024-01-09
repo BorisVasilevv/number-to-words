@@ -1,6 +1,7 @@
 import java.util.HashMap;
+import java.util.Map;
 
-public class WordsPartHelper {
+public class NumberToWordsParseHelper {
     private final static int maleGenderIndex = 0;
     private final static int neuterGenderIndex = 1;
     private final static int feminineGenderIndex = 2;
@@ -80,7 +81,6 @@ public class WordsPartHelper {
         put("П", "ёх");
     }};
 
-
     private final static HashMap<String, String> endingForFour =new HashMap<>(){{
         put("И", "е");
         put("Р", "ёх");
@@ -101,11 +101,11 @@ public class WordsPartHelper {
 
     private final static HashMap<String, String> endingForFourty =new HashMap<>(){{
         put("И", "");
-        put("Р", "и");
-        put("Д", "и");
-        put("В", "ь");
-        put("Т", "ью");
-        put("П", "и");
+        put("Р", "а");
+        put("Д", "а");
+        put("В", "");
+        put("Т", "а");
+        put("П", "а");
     }};
 
     //have some same things with endingForFromFiveToTwentyAndThirty
@@ -118,7 +118,7 @@ public class WordsPartHelper {
         put("П", "идесяти");
     }};
 
-    private final static HashMap<String, String> endingForNinеtyAndHundred =new HashMap<>(){{
+    private final static HashMap<String, String> endingForNinetyAndHundred =new HashMap<>(){{
         put("И", "о");
         put("Р", "а");
         put("Д", "а");
@@ -163,4 +163,50 @@ public class WordsPartHelper {
         put("Т", "ьюстами");
         put("П", "истах");
     }};
+
+    public static String ThreeDigitsToWords(Integer number, String gender, String wordCase){
+        StringBuilder sb = new StringBuilder();
+        int firstDigit = number/100;
+        if (firstDigit!=0){
+            sb.append(hundredsFirstPart.get(firstDigit));
+            try {
+                HashMap endings = getSuitableEndingMapToHundreds(firstDigit);
+                sb.append(endings.get(wordCase));
+                sb.append(" ");
+            } catch (IllegalArgumentException e) {
+                throw new RuntimeException(e.getMessage());
+            } catch (Exception e){
+                throw new RuntimeException(e);
+            }
+        }
+
+
+        int lastTwoDigit = number%100;
+        if (lastTwoDigit>=10 && lastTwoDigit<=19){
+            sb.append(teensFirstPart.get(lastTwoDigit));
+            sb.append(endingForFromFiveToTwentyAndThirty.get(wordCase));
+        }
+        else {
+            int secondDigit=lastTwoDigit/10;
+            int lastDigit = lastTwoDigit%10;
+        }
+        return sb.toString();
+    }
+
+    private static HashMap getSuitableEndingMapToHundreds(int digit) throws IllegalArgumentException {
+        if (digit==1){
+            return endingForNinetyAndHundred;
+        } else if (digit==2) {
+            return endingForTwoHundreds;
+        } else if (digit==3) {
+            return endingForThreeHundreds;
+        } else if (digit==4) {
+            return endingForFourHundreds;
+        } else if (digit>=5 && digit<=9) {
+            return endingForFromFiveToNineHundreds;
+        } else{
+            throw new IllegalArgumentException(String.format(
+                    "Method getSuitableEndingMapToHundreds accept argument with only one digit, but was %d", digit));
+        }
+    }
 }

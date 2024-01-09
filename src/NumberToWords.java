@@ -1,81 +1,23 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class NumberToWords {
 
-
-    public static String numToWords(int nSum, String gender, String wordCase){
-        String genderAndCase = gender + wordCase;
-        switch (genderAndCase){
-            case "М":
-                return "M";
-                //break;
-            case "С":
-                return "С";
-                //break;
-            case "Т":
-                return "Т";
-                //break;
-
-            default:
-                return "Ошибка, введённый пол или падеж неверен";
-        }
-
-        //return "";
+    public static String numToWords(int nSum, String gender, String wordCase) {
+        ArrayList<Integer> threeDigitsNumbersArray = numberToThreeDigitsNumbers(nSum);
+        String wordsWithoutThousandsMillions = NumberToWordsParseHelper.ThreeDigitsToWords(nSum, gender, wordCase);
+        return wordsWithoutThousandsMillions;
     }
 
-    private static final HashMap<String, ArrayList<String>> cases = new HashMap<>(){{
-        put("И", new ArrayList<>(){
-            {
-                add("");
-                add("");
-                add("");
-            }
-        });
-
-
-        put("Р", new ArrayList<>(){
-            {
-                add("");
-                add("");
-                add("");
-            }
-        });
-
-        put("Д", new ArrayList<>(){
-            {
-                add("");
-                add("");
-                add("");
-            }
-        });
-
-        put("В", new ArrayList<>(){
-            {
-                add("");
-                add("");
-                add("");
-            }
-        });
-
-        put("Т", new ArrayList<>(){
-            {
-                add("");
-                add("");
-                add("");
-            }
-        });
-
-
-        put("П", new ArrayList<>(){
-            {
-                add("");
-                add("");
-                add("");
-            }
-        });
-
-
-    }};
-
+    public static ArrayList<Integer> numberToThreeDigitsNumbers(int number){
+        ArrayList<Integer> arr = new ArrayList<>();
+        while (number>0){
+            int lastDigits = number%1000;
+            arr.add(lastDigits);
+            number/=1000;
+        }
+        Collections.reverse(arr);
+        return arr;
+    }
 }
