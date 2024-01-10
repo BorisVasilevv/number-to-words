@@ -1,23 +1,33 @@
+import enums.WordCaseEnum;
+
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 
 public class NumberToWords {
 
-    public static String numToWords(int nSum, String gender, String wordCase) {
+    public static String numToWords(long nSum, String gender, String wordCase) {
         ArrayList<Integer> threeDigitsNumbersArray = numberToThreeDigitsNumbers(nSum);
-        String wordsWithoutThousandsMillions = NumberToWordsParseHelper.ThreeDigitsToWords(nSum, gender, wordCase);
-        return wordsWithoutThousandsMillions;
+        ArrayList<String> threeDigitWordsArray = new ArrayList<>();
+        WordCaseEnum wordCaseEnumElem = WordCaseEnum.getCaseByLetter(wordCase);
+        for (Integer threeDigits: threeDigitsNumbersArray) {
+            threeDigitWordsArray.add(NumberToWordsParseHelper.threeDigitsToWords(threeDigits, gender, wordCaseEnumElem));
+        }
+        NumberBigPartNameHelper.appendPartNameToNumbers(threeDigitWordsArray, wordCaseEnumElem);
+        Collections.reverse(threeDigitWordsArray);
+        StringBuilder sb = new StringBuilder();
+        for (String elem:threeDigitWordsArray) {
+            sb.append(elem);
+        }
+        return sb.toString();
     }
 
-    public static ArrayList<Integer> numberToThreeDigitsNumbers(int number){
+    public static ArrayList<Integer> numberToThreeDigitsNumbers(long number){
         ArrayList<Integer> arr = new ArrayList<>();
         while (number>0){
-            int lastDigits = number%1000;
+            int lastDigits = (int)(number%1000);
             arr.add(lastDigits);
             number/=1000;
         }
-        Collections.reverse(arr);
         return arr;
     }
 }
