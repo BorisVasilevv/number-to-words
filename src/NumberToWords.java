@@ -9,15 +9,20 @@ public class NumberToWords {
         ArrayList<Integer> threeDigitsNumbersArray = numberToThreeDigitsNumbers(nSum);
         ArrayList<String> threeDigitWordsArray = new ArrayList<>();
         WordCaseEnum wordCaseEnumElem = WordCaseEnum.getCaseByLetter(wordCase);
-        for (Integer threeDigits: threeDigitsNumbersArray) {
-            threeDigitWordsArray.add(NumberToWordsParseHelper.threeDigitsToWords(threeDigits, gender, wordCaseEnumElem));
+        StringBuilder sb = new StringBuilder();
+        for (int i= 0; i<=threeDigitsNumbersArray.size();i++) {
+            String str = NumberToWordsParseHelper.threeDigitsToWords(threeDigitsNumbersArray.get(i), gender, wordCaseEnumElem);
+
+            threeDigitWordsArray.add(
+                    NumberToWordsParseHelper.threeDigitsToWords(threeDigitsNumbersArray.get(i), gender, wordCaseEnumElem));
+
         }
         NumberBigPartNameHelper.appendPartNameToNumbers(threeDigitWordsArray, wordCaseEnumElem);
         Collections.reverse(threeDigitWordsArray);
-        StringBuilder sb = new StringBuilder();
-        for (String elem:threeDigitWordsArray) {
-            sb.append(elem);
-        }
+//        StringBuilder sb = new StringBuilder();
+//        for (String elem:threeDigitWordsArray) {
+//            sb.append(elem);
+//        }
         return sb.toString();
     }
 

@@ -235,10 +235,10 @@ public class NumberToWordsParseHelper {
 
     private static Integer getGenderIndex(String gender){
         switch (gender){
-            case "M": return constMaleGenderIndex;
+            case "М": return constMaleGenderIndex;
             case "С": return constNeuterGenderIndex;
             case "Ж": return constFeminineGenderIndex;
-            default: throw new RuntimeException("Illegal gender argument");
+            default: throw new RuntimeException("Illegal gender argument. It was " + gender);
         }
     }
 

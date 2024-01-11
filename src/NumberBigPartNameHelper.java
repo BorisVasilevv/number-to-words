@@ -20,7 +20,16 @@ public class NumberBigPartNameHelper {
         put(WordCaseEnum.PREPOSITIONAL, "е");
     }};
 
-    private static final HashMap <WordCaseEnum, String> endingsForThousandPlural = new HashMap<>(){{
+    private static final HashMap <WordCaseEnum, String> endingsForThousandTwoToFour = new HashMap<>(){{
+        put(WordCaseEnum.NOMINATIVE, "и");
+        put(WordCaseEnum.GENITIVE, "");
+        put(WordCaseEnum.DATIVE, "ам");
+        put(WordCaseEnum.ACCUSATIVE, "и");
+        put(WordCaseEnum.INSTRUMENTAL, "ами");
+        put(WordCaseEnum.PREPOSITIONAL, "ах");
+    }};
+
+    private static final HashMap <WordCaseEnum, String> endingsForThousandFiveToNine = new HashMap<>(){{
         put(WordCaseEnum.NOMINATIVE, "и");
         put(WordCaseEnum.GENITIVE, "");
         put(WordCaseEnum.DATIVE, "ам");
@@ -38,19 +47,31 @@ public class NumberBigPartNameHelper {
         put(WordCaseEnum.PREPOSITIONAL, "е");
     }};
 
-    private static final HashMap <WordCaseEnum, String> endingsForMiAndBillionPlural= new HashMap<>(){{
-        put(WordCaseEnum.NOMINATIVE, "ы");
+    private static final HashMap <WordCaseEnum, String> endingsForMiAndBillionTwoToFour = new HashMap<>(){{
+        put(WordCaseEnum.NOMINATIVE, "а");
         put(WordCaseEnum.GENITIVE, "ов");
         put(WordCaseEnum.DATIVE, "ам");
-        put(WordCaseEnum.ACCUSATIVE, "");
+        put(WordCaseEnum.ACCUSATIVE, "а");
+        put(WordCaseEnum.INSTRUMENTAL, "амм");
+        put(WordCaseEnum.PREPOSITIONAL, "ах");
+    }};
+
+    private static final HashMap <WordCaseEnum, String> endingsForMiAndBillionFiveToNine = new HashMap<>(){{
+        put(WordCaseEnum.NOMINATIVE, "ов");
+        put(WordCaseEnum.GENITIVE, "ов");
+        put(WordCaseEnum.DATIVE, "ам");
+        put(WordCaseEnum.ACCUSATIVE, "ов");
         put(WordCaseEnum.INSTRUMENTAL, "амм");
         put(WordCaseEnum.PREPOSITIONAL, "ах");
     }};
 
     private static final NumberBigPartName[] numberNameBigPart= new NumberBigPartName[]{
-            new NumberBigPartName(thousandName, endingsForThousandSingle, endingsForThousandPlural),
-            new NumberBigPartName(millionName, endingsForMiAndBillionSingle, endingsForMiAndBillionPlural),
-            new NumberBigPartName(billionName, endingsForMiAndBillionSingle, endingsForMiAndBillionPlural)
+            new NumberBigPartName(thousandName, endingsForThousandSingle,
+                    endingsForThousandTwoToFour,endingsForThousandFiveToNine),
+            new NumberBigPartName(millionName, endingsForMiAndBillionSingle,
+                    endingsForMiAndBillionTwoToFour,endingsForMiAndBillionFiveToNine),
+            new NumberBigPartName(billionName, endingsForMiAndBillionSingle,
+                    endingsForMiAndBillionTwoToFour, endingsForMiAndBillionFiveToNine)
     };
 
     public static void appendPartNameToNumbers(ArrayList<String> numbers, WordCaseEnum wordCase){
