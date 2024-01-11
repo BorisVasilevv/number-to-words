@@ -74,16 +74,11 @@ public class NumberBigPartNameHelper {
                     endingsForMiAndBillionTwoToFour, endingsForMiAndBillionFiveToNine)
     };
 
-    public static void appendPartNameToNumbers(ArrayList<String> numbers, WordCaseEnum wordCase){
-        if (numbers.size()<=1) return;
-        for(int i =1; i<numbers.size(); i++){
-            String elem = numbers.get(i);
-            String lastPart = Arrays.stream(elem.split(" ")).reduce((first, second) -> second).orElse(null);
-            boolean isSingle = lastPart != null && lastPart.contains("од") && !lastPart.contains("одигадцат");
-            String elemBigPartName = numberNameBigPart[i-1].getFullName(wordCase, isSingle);
-            elem = String.format("%s%s ", elem, elemBigPartName);
-            numbers.set(i, elem);
-        }
+    public static String getPartNameToThreeDigit(int threeDigitNumber, int place, WordCaseEnum wordCase){
+        if (place<1) return "";
+        int lastTwoDigit = threeDigitNumber%100;
+        return numberNameBigPart[place-1].getFullName(wordCase, lastTwoDigit);
+
     }
 
 }

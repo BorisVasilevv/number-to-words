@@ -2,27 +2,25 @@ import enums.WordCaseEnum;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Stack;
 
 public class NumberToWords {
 
     public static String numToWords(long nSum, String gender, String wordCase) {
         ArrayList<Integer> threeDigitsNumbersArray = numberToThreeDigitsNumbers(nSum);
-        ArrayList<String> threeDigitWordsArray = new ArrayList<>();
+        Stack<String> wordsOfNumberAndPartNames = new Stack<>();
         WordCaseEnum wordCaseEnumElem = WordCaseEnum.getCaseByLetter(wordCase);
         StringBuilder sb = new StringBuilder();
-        for (int i= 0; i<=threeDigitsNumbersArray.size();i++) {
-            String str = NumberToWordsParseHelper.threeDigitsToWords(threeDigitsNumbersArray.get(i), gender, wordCaseEnumElem);
-
-            threeDigitWordsArray.add(
-                    NumberToWordsParseHelper.threeDigitsToWords(threeDigitsNumbersArray.get(i), gender, wordCaseEnumElem));
-
+        for (int i= 0; i<threeDigitsNumbersArray.size();i++) {
+            int threeDigitsNumber = threeDigitsNumbersArray.get(i);
+            String threeDigitPartNumber =NumberBigPartNameHelper.getPartNameToThreeDigit(threeDigitsNumber , i ,wordCaseEnumElem);
+            wordsOfNumberAndPartNames.push(threeDigitPartNumber);
+            String threeDigitToWords = NumberToWordsParseHelper.threeDigitsToWords(threeDigitsNumber, gender, wordCaseEnumElem);
+            wordsOfNumberAndPartNames.push(threeDigitToWords);
         }
-        NumberBigPartNameHelper.appendPartNameToNumbers(threeDigitWordsArray, wordCaseEnumElem);
-        Collections.reverse(threeDigitWordsArray);
-//        StringBuilder sb = new StringBuilder();
-//        for (String elem:threeDigitWordsArray) {
-//            sb.append(elem);
-//        }
+        while (!wordsOfNumberAndPartNames.empty()){
+            sb.append(wordsOfNumberAndPartNames.pop());
+        }
         return sb.toString();
     }
 
