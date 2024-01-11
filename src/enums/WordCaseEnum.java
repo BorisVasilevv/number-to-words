@@ -7,7 +7,7 @@ public enum WordCaseEnum {
     ACCUSATIVE("В"),
     INSTRUMENTAL("Т"),
     PREPOSITIONAL("П");
-    private String russianLetter;
+    private final String russianLetter;
     WordCaseEnum(String russianLetter){
         this.russianLetter=russianLetter;
     }
@@ -16,7 +16,7 @@ public enum WordCaseEnum {
 
     public static WordCaseEnum getCaseByLetter(String russianLetter) throws IllegalArgumentException{
         for (WordCaseEnum wordCase: WordCaseEnum.values()) {
-            if(wordCase.russianLetter==russianLetter) return wordCase;
+            if(wordCase.russianLetter.equals(russianLetter)) return wordCase;
         }
         throw new IllegalArgumentException("Illegal first russian letter of case");
     }

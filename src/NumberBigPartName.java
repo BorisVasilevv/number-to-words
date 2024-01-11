@@ -13,10 +13,10 @@ public class NumberBigPartName {
         this.endingsFiveToNineAndTeens = endingsFiveToNineAndTeens;
     }
 
-    private String name;
-    private HashMap<WordCaseEnum, String> endingsOne;
-    private HashMap<WordCaseEnum, String> endingsTwoToFour;
-    private HashMap<WordCaseEnum, String> endingsFiveToNineAndTeens;
+    private final String name;
+    private final HashMap<WordCaseEnum, String> endingsOne;
+    private final HashMap<WordCaseEnum, String> endingsTwoToFour;
+    private final HashMap<WordCaseEnum, String> endingsFiveToNineAndTeens;
 
     public String getFullName(WordCaseEnum wordCase, int numberLessTwenty ) throws IllegalArgumentException {
         HashMap<WordCaseEnum, String> endings;

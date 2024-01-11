@@ -1,7 +1,5 @@
 import enums.WordCaseEnum;
-
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Stack;
 
 public class NumberToWords {
@@ -13,13 +11,14 @@ public class NumberToWords {
         StringBuilder sb = new StringBuilder();
         for (int i= 0; i<threeDigitsNumbersArray.size();i++) {
             int threeDigitsNumber = threeDigitsNumbersArray.get(i);
-            String threeDigitPartNumber =NumberBigPartNameHelper.getPartNameToThreeDigit(threeDigitsNumber , i ,wordCaseEnumElem);
+            String threeDigitPartNumber = NumberBigPartNameGetHelper.getPartNameToThreeDigit(threeDigitsNumber , i ,wordCaseEnumElem);
             wordsOfNumberAndPartNames.push(threeDigitPartNumber);
             String threeDigitToWords = NumberToWordsParseHelper.threeDigitsToWords(threeDigitsNumber, gender, wordCaseEnumElem);
             wordsOfNumberAndPartNames.push(threeDigitToWords);
         }
         while (!wordsOfNumberAndPartNames.empty()){
             sb.append(wordsOfNumberAndPartNames.pop());
+            sb.append(" ");
         }
         return sb.toString();
     }

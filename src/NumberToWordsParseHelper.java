@@ -3,12 +3,7 @@ import enums.WordCaseEnum;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
-//    NOMINATIVE(enums.WordCaseEnum.NOMINATIVE),
-//    GENITIVE(enums.WordCaseEnum.GENITIVE),
-//    DATIVE(enums.WordCaseEnum.DATIVE),
-//    ACCUSATIVE(enums.WordCaseEnum.ACCUSATIVE),
-//    INSTRUMENTAL(enums.WordCaseEnum.INSTRUMENTAL),
-//    PREPOSITIONAL(enums.WordCaseEnum.PREPOSITIONAL);
+
 public class NumberToWordsParseHelper {
     private final static int constMaleGenderIndex = 0;
     private final static int constNeuterGenderIndex = 1;
@@ -172,7 +167,7 @@ public class NumberToWordsParseHelper {
         put(WordCaseEnum.PREPOSITIONAL, "истах");
     }};
 
-    private static HashMap<NumberPartEnum, Method> methodWithEndingsByNumberPart =
+    private final static HashMap<NumberPartEnum, Method> methodWithEndingsByNumberPart =
             new HashMap<>(){{
                 try {
                     put(NumberPartEnum.UNITS, NumberToWordsParseHelper.class.getDeclaredMethod(
@@ -188,29 +183,30 @@ public class NumberToWordsParseHelper {
                 }
             }};
 
+
     public static String threeDigitsToWords(Integer number, String gender, WordCaseEnum wordCase) {
         StringBuilder sb = new StringBuilder();
         int firstDigit = number / 100;
-        sb.append(getPartOfNumber(firstDigit,NumberPartEnum.HUNDREDS,gender,wordCase));
+        sb.append(parsePartOfNumberToWord(firstDigit,NumberPartEnum.HUNDREDS,gender,wordCase));
 
         int lastTwoDigit = number % 100;
         if (lastTwoDigit >= 10 && lastTwoDigit <= 19) {
-            sb.append(getPartOfNumber(lastTwoDigit,NumberPartEnum.TEENS,gender,wordCase));
+            sb.append(parsePartOfNumberToWord(lastTwoDigit,NumberPartEnum.TEENS,gender,wordCase));
         } else {
             int middleDigit = lastTwoDigit / 10;
-            sb.append(getPartOfNumber(middleDigit,NumberPartEnum.TENS,gender,wordCase));
+            sb.append(parsePartOfNumberToWord(middleDigit,NumberPartEnum.TENS,gender,wordCase));
             int lastDigit = lastTwoDigit % 10;
-            sb.append(getPartOfNumber(lastDigit,NumberPartEnum.UNITS,gender,wordCase));
+            sb.append(parsePartOfNumberToWord(lastDigit,NumberPartEnum.UNITS,gender,wordCase));
         }
         return sb.toString();
     }
 
-    private static String getPartOfNumber(int numberLessTwenty, NumberPartEnum numberPart,
-                                          String gender, WordCaseEnum wordCase) {
+    private static String parsePartOfNumberToWord(int numberLessTwenty, NumberPartEnum numberPart,
+                                                  String gender, WordCaseEnum wordCase) {
         if(numberLessTwenty==0) return "";
         StringBuilder sb = new StringBuilder();
         try {
-            HashMap wordBeginnings= getSuitableBeginnings(numberPart);
+            HashMap<Integer, String> wordBeginnings= getSuitableBeginnings(numberPart);
             Method getEnding = methodWithEndingsByNumberPart.get(numberPart);
             HashMap wordEndings= (HashMap) getEnding.invoke(null, numberLessTwenty);
             sb.append(wordBeginnings.get(numberLessTwenty));
@@ -223,7 +219,10 @@ public class NumberToWordsParseHelper {
                 String ending = (String) wordEndings.get(wordCase);
                 sb.append(ending);
             }
-            sb.append(" ");
+
+            if (numberPart!=NumberPartEnum.UNITS){
+                sb.append(" ");
+            }
 
         } catch (IllegalArgumentException e) {
             throw new RuntimeException(e.getMessage());
@@ -234,26 +233,25 @@ public class NumberToWordsParseHelper {
     }
 
     private static Integer getGenderIndex(String gender){
-        switch (gender){
-            case "М": return constMaleGenderIndex;
-            case "С": return constNeuterGenderIndex;
-            case "Ж": return constFeminineGenderIndex;
-            default: throw new RuntimeException("Illegal gender argument. It was " + gender);
-        }
+        return switch (gender) {
+            case "М" -> constMaleGenderIndex;
+            case "С" -> constNeuterGenderIndex;
+            case "Ж" -> constFeminineGenderIndex;
+            default -> throw new RuntimeException("Illegal gender argument. It was " + gender);
+        };
     }
 
     private static HashMap<Integer, String> getSuitableBeginnings(NumberPartEnum numberPart){
-        switch (numberPart){
-            case UNITS: return unitsFirstPart;
-            case TENS: return tensFirstPart;
-            case TEENS: return teensFirstPart;
-            case HUNDREDS: return hundredsFirstPart;
-            default: throw new RuntimeException("Illegal argument with type enums.NumberPartEnum");
-        }
+        return switch (numberPart) {
+            case UNITS -> unitsFirstPart;
+            case TENS -> tensFirstPart;
+            case TEENS -> teensFirstPart;
+            case HUNDREDS -> hundredsFirstPart;
+            default -> throw new RuntimeException("Illegal argument with type enums.NumberPartEnum");
+        };
     }
 
-
-    private static HashMap getSuitableEndingMapToHundreds(int digit) throws IllegalArgumentException {
+    private static HashMap<WordCaseEnum, String> getSuitableEndingMapToHundreds(int digit) throws IllegalArgumentException {
         if (digit == 1) {
             return endingForNinetyAndHundred;
         } else if (digit == 2) {
@@ -270,7 +268,7 @@ public class NumberToWordsParseHelper {
         }
     }
 
-    private static HashMap getSuitableEndingMapToTens(int digit) throws IllegalArgumentException {
+    private static HashMap<WordCaseEnum, String> getSuitableEndingMapToTens(int digit) throws IllegalArgumentException {
         if (digit == 2 || digit == 3) {
             return endingForFromFiveToTwentyAndThirty;
         } else if (digit == 4) {
@@ -286,7 +284,7 @@ public class NumberToWordsParseHelper {
         }
     }
 
-    private static HashMap getSuitableEndingMapToTeens(int digit) {
+    private static HashMap<WordCaseEnum, String> getSuitableEndingMapToTeens(int digit) {
         return endingForFromFiveToTwentyAndThirty;
     }
 
@@ -306,6 +304,5 @@ public class NumberToWordsParseHelper {
                     "Method getSuitableEndingMapToUnits accept argument with only one digit, " +
                             "not zero, but argument was %d", digit));
         }
-        //return endingForFromFiveToTwentyAndThirty;
     }
 }

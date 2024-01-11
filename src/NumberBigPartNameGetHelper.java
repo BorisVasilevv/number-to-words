@@ -1,12 +1,9 @@
 import enums.WordCaseEnum;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
-public class NumberBigPartNameHelper {
+public class NumberBigPartNameGetHelper {
 
-    private NumberBigPartNameHelper() {}
+    private NumberBigPartNameGetHelper() {}
 
     private static final String thousandName = "тысяч";
     private static final String millionName = "миллион";
