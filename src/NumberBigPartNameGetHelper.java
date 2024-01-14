@@ -27,10 +27,10 @@ public class NumberBigPartNameGetHelper {
     }};
 
     private static final HashMap <WordCaseEnum, String> endingsForThousandFiveToNine = new HashMap<>(){{
-        put(WordCaseEnum.NOMINATIVE, "и");
+        put(WordCaseEnum.NOMINATIVE, "");
         put(WordCaseEnum.GENITIVE, "");
         put(WordCaseEnum.DATIVE, "ам");
-        put(WordCaseEnum.ACCUSATIVE, "и");
+        put(WordCaseEnum.ACCUSATIVE, "");
         put(WordCaseEnum.INSTRUMENTAL, "ами");
         put(WordCaseEnum.PREPOSITIONAL, "ах");
     }};

@@ -190,13 +190,22 @@ public class NumberToWordsParseHelper {
         sb.append(parsePartOfNumberToWord(firstDigit,NumberPartEnum.HUNDREDS,gender,wordCase));
 
         int lastTwoDigit = number % 100;
+        if (lastTwoDigit !=0){
+            sb.append(" ");
+        }
+
         if (lastTwoDigit >= 10 && lastTwoDigit <= 19) {
             sb.append(parsePartOfNumberToWord(lastTwoDigit,NumberPartEnum.TEENS,gender,wordCase));
+            sb.append(" ");
         } else {
             int middleDigit = lastTwoDigit / 10;
             sb.append(parsePartOfNumberToWord(middleDigit,NumberPartEnum.TENS,gender,wordCase));
+            if( middleDigit!=0){
+                sb.append(" ");
+            }
             int lastDigit = lastTwoDigit % 10;
             sb.append(parsePartOfNumberToWord(lastDigit,NumberPartEnum.UNITS,gender,wordCase));
+
         }
         return sb.toString();
     }
@@ -218,10 +227,6 @@ public class NumberToWordsParseHelper {
             else {
                 String ending = (String) wordEndings.get(wordCase);
                 sb.append(ending);
-            }
-
-            if (numberPart!=NumberPartEnum.UNITS){
-                sb.append(" ");
             }
 
         } catch (IllegalArgumentException e) {

@@ -23,6 +23,9 @@ public class NumberBigPartName {
         if( numberLessTwenty>=20){
             numberLessTwenty%=10;
         }
+        if( numberLessTwenty ==0){
+            return name;
+        }
         if (numberLessTwenty ==1){
             endings=endingsOne;
         } else if (numberLessTwenty >=2 && numberLessTwenty<=4){
