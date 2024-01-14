@@ -5,9 +5,6 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 
 public class NumberToWordsParseHelper {
-    private final static int constMaleGenderIndex = 0;
-    private final static int constNeuterGenderIndex = 1;
-    private final static int constFeminineGenderIndex = 2;
 
     private final static HashMap<Integer, String> unitsFirstPart = new HashMap<>() {{
         put(1, "од");
@@ -184,34 +181,34 @@ public class NumberToWordsParseHelper {
             }};
 
 
-    public static String threeDigitsToWords(Integer number, String gender, WordCaseEnum wordCase) {
+    public static String threeDigitsToWords(Integer number, Integer genderIndex, WordCaseEnum wordCase) {
         StringBuilder sb = new StringBuilder();
         int firstDigit = number / 100;
-        sb.append(parsePartOfNumberToWord(firstDigit,NumberPartEnum.HUNDREDS,gender,wordCase));
+        sb.append(parsePartOfNumberToWord(firstDigit,NumberPartEnum.HUNDREDS,genderIndex,wordCase));
 
         int lastTwoDigit = number % 100;
-        if (lastTwoDigit !=0){
+        if (firstDigit!=0 && lastTwoDigit !=0){
             sb.append(" ");
         }
 
         if (lastTwoDigit >= 10 && lastTwoDigit <= 19) {
-            sb.append(parsePartOfNumberToWord(lastTwoDigit,NumberPartEnum.TEENS,gender,wordCase));
+            sb.append(parsePartOfNumberToWord(lastTwoDigit,NumberPartEnum.TEENS,genderIndex,wordCase));
             sb.append(" ");
         } else {
             int middleDigit = lastTwoDigit / 10;
-            sb.append(parsePartOfNumberToWord(middleDigit,NumberPartEnum.TENS,gender,wordCase));
+            sb.append(parsePartOfNumberToWord(middleDigit,NumberPartEnum.TENS,genderIndex,wordCase));
             if( middleDigit!=0){
                 sb.append(" ");
             }
             int lastDigit = lastTwoDigit % 10;
-            sb.append(parsePartOfNumberToWord(lastDigit,NumberPartEnum.UNITS,gender,wordCase));
+            sb.append(parsePartOfNumberToWord(lastDigit,NumberPartEnum.UNITS,genderIndex,wordCase));
 
         }
         return sb.toString();
     }
 
     private static String parsePartOfNumberToWord(int numberLessTwenty, NumberPartEnum numberPart,
-                                                  String gender, WordCaseEnum wordCase) {
+                                                  Integer genderIndex, WordCaseEnum wordCase) {
         if(numberLessTwenty==0) return "";
         StringBuilder sb = new StringBuilder();
         try {
@@ -221,7 +218,6 @@ public class NumberToWordsParseHelper {
             sb.append(wordBeginnings.get(numberLessTwenty));
             if (numberPart==NumberPartEnum.UNITS && numberLessTwenty>=1 && numberLessTwenty<=2){
                 String[] endingArrayByGender = (String[]) wordEndings.get(wordCase);
-                Integer genderIndex = getGenderIndex(gender);
                 sb.append(endingArrayByGender[genderIndex]);
             }
             else {
@@ -235,15 +231,6 @@ public class NumberToWordsParseHelper {
             throw new RuntimeException(e);
         }
         return sb.toString();
-    }
-
-    private static Integer getGenderIndex(String gender){
-        return switch (gender) {
-            case "М" -> constMaleGenderIndex;
-            case "С" -> constNeuterGenderIndex;
-            case "Ж" -> constFeminineGenderIndex;
-            default -> throw new RuntimeException("Illegal gender argument. It was " + gender);
-        };
     }
 
     private static HashMap<Integer, String> getSuitableBeginnings(NumberPartEnum numberPart){
