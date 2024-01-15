@@ -1,14 +1,16 @@
 import enums.WordCaseEnum;
+
 import java.util.HashMap;
 
 public class NumberBigPartNameGetHelper {
 
-    private NumberBigPartNameGetHelper() {}
+    private NumberBigPartNameGetHelper() {
+    }
 
     private static final String thousandName = "тысяч";
     private static final String millionName = "миллион";
     private static final String billionName = "миллиард";
-    private static final HashMap <WordCaseEnum, String> endingsForThousandSingle = new HashMap<>(){{
+    private static final HashMap<WordCaseEnum, String> endingsForThousandSingle = new HashMap<>() {{
         put(WordCaseEnum.NOMINATIVE, "а");
         put(WordCaseEnum.GENITIVE, "и");
         put(WordCaseEnum.DATIVE, "е");
@@ -17,7 +19,7 @@ public class NumberBigPartNameGetHelper {
         put(WordCaseEnum.PREPOSITIONAL, "е");
     }};
 
-    private static final HashMap <WordCaseEnum, String> endingsForThousandTwoToFour = new HashMap<>(){{
+    private static final HashMap<WordCaseEnum, String> endingsForThousandTwoToFour = new HashMap<>() {{
         put(WordCaseEnum.NOMINATIVE, "и");
         put(WordCaseEnum.GENITIVE, "");
         put(WordCaseEnum.DATIVE, "ам");
@@ -26,7 +28,7 @@ public class NumberBigPartNameGetHelper {
         put(WordCaseEnum.PREPOSITIONAL, "ах");
     }};
 
-    private static final HashMap <WordCaseEnum, String> endingsForThousandFiveToNine = new HashMap<>(){{
+    private static final HashMap<WordCaseEnum, String> endingsForThousandFiveToNine = new HashMap<>() {{
         put(WordCaseEnum.NOMINATIVE, "");
         put(WordCaseEnum.GENITIVE, "");
         put(WordCaseEnum.DATIVE, "ам");
@@ -35,7 +37,7 @@ public class NumberBigPartNameGetHelper {
         put(WordCaseEnum.PREPOSITIONAL, "ах");
     }};
 
-    private static final HashMap <WordCaseEnum, String> endingsForMiAndBillionSingle= new HashMap<>(){{
+    private static final HashMap<WordCaseEnum, String> endingsForMiAndBillionSingle = new HashMap<>() {{
         put(WordCaseEnum.NOMINATIVE, "");
         put(WordCaseEnum.GENITIVE, "а");
         put(WordCaseEnum.DATIVE, "у");
@@ -44,7 +46,7 @@ public class NumberBigPartNameGetHelper {
         put(WordCaseEnum.PREPOSITIONAL, "е");
     }};
 
-    private static final HashMap <WordCaseEnum, String> endingsForMiAndBillionTwoToFour = new HashMap<>(){{
+    private static final HashMap<WordCaseEnum, String> endingsForMiAndBillionTwoToFour = new HashMap<>() {{
         put(WordCaseEnum.NOMINATIVE, "а");
         put(WordCaseEnum.GENITIVE, "ов");
         put(WordCaseEnum.DATIVE, "ам");
@@ -53,7 +55,7 @@ public class NumberBigPartNameGetHelper {
         put(WordCaseEnum.PREPOSITIONAL, "ах");
     }};
 
-    private static final HashMap <WordCaseEnum, String> endingsForMiAndBillionFiveToNine = new HashMap<>(){{
+    private static final HashMap<WordCaseEnum, String> endingsForMiAndBillionFiveToNine = new HashMap<>() {{
         put(WordCaseEnum.NOMINATIVE, "ов");
         put(WordCaseEnum.GENITIVE, "ов");
         put(WordCaseEnum.DATIVE, "ам");
@@ -62,20 +64,19 @@ public class NumberBigPartNameGetHelper {
         put(WordCaseEnum.PREPOSITIONAL, "ах");
     }};
 
-    private static final NumberBigPartName[] numberNameBigPart= new NumberBigPartName[]{
+    private static final NumberBigPartName[] numberNameBigPart = new NumberBigPartName[]{
             new NumberBigPartName(thousandName, endingsForThousandSingle,
-                    endingsForThousandTwoToFour,endingsForThousandFiveToNine),
+                    endingsForThousandTwoToFour, endingsForThousandFiveToNine),
             new NumberBigPartName(millionName, endingsForMiAndBillionSingle,
-                    endingsForMiAndBillionTwoToFour,endingsForMiAndBillionFiveToNine),
+                    endingsForMiAndBillionTwoToFour, endingsForMiAndBillionFiveToNine),
             new NumberBigPartName(billionName, endingsForMiAndBillionSingle,
                     endingsForMiAndBillionTwoToFour, endingsForMiAndBillionFiveToNine)
     };
 
-    public static String getPartNameToThreeDigit(int threeDigitNumber, int place, WordCaseEnum wordCase){
-        if (place<1) return "";
-        int lastTwoDigit = threeDigitNumber%100;
-        return numberNameBigPart[place-1].getFullName(wordCase, lastTwoDigit);
-
+    public static String getPartNameToThreeDigit(int threeDigitNumber, int place, WordCaseEnum wordCase) {
+        if (place < 1) return "";
+        int lastTwoDigit = threeDigitNumber % 100;
+        return numberNameBigPart[place - 1].getFullName(wordCase, lastTwoDigit);
     }
 
 }

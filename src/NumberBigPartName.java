@@ -18,24 +18,24 @@ public class NumberBigPartName {
     private final HashMap<WordCaseEnum, String> endingsTwoToFour;
     private final HashMap<WordCaseEnum, String> endingsFiveToNineAndTeens;
 
-    public String getFullName(WordCaseEnum wordCase, int numberLessTwenty ) throws IllegalArgumentException {
+    public String getFullName(WordCaseEnum wordCase, int numberLessTwenty) throws IllegalArgumentException {
         HashMap<WordCaseEnum, String> endings;
-        if( numberLessTwenty>=20){
-            numberLessTwenty%=10;
+        if (numberLessTwenty >= 20) {
+            numberLessTwenty %= 10;
         }
-        if( numberLessTwenty ==0){
+        if (numberLessTwenty == 0) {
             return name;
         }
-        if (numberLessTwenty ==1){
-            endings=endingsOne;
-        } else if (numberLessTwenty >=2 && numberLessTwenty<=4){
-            endings=endingsTwoToFour;
-        } else if (numberLessTwenty>=5){
-            endings=endingsFiveToNineAndTeens;
+        if (numberLessTwenty == 1) {
+            endings = endingsOne;
+        } else if (numberLessTwenty >= 2 && numberLessTwenty <= 4) {
+            endings = endingsTwoToFour;
+        } else if (numberLessTwenty >= 5) {
+            endings = endingsFiveToNineAndTeens;
         } else {
-            throw new RuntimeException("Error in method getFullName in class NumberBigPartName argument was: "+ numberLessTwenty);
+            throw new RuntimeException("Error in method getFullName in class NumberBigPartName argument was: " + numberLessTwenty);
         }
-        return String.format("%s%s", name,  endings.get(wordCase));
+        return String.format("%s%s", name, endings.get(wordCase));
 
     }
 }

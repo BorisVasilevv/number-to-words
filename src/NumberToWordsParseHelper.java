@@ -165,7 +165,7 @@ public class NumberToWordsParseHelper {
     }};
 
     private final static HashMap<NumberPartEnum, Method> methodWithEndingsByNumberPart =
-            new HashMap<>(){{
+            new HashMap<>() {{
                 try {
                     put(NumberPartEnum.UNITS, NumberToWordsParseHelper.class.getDeclaredMethod(
                             "getSuitableEndingMapToUnits", int.class));
@@ -184,43 +184,40 @@ public class NumberToWordsParseHelper {
     public static String threeDigitsToWords(Integer number, Integer genderIndex, WordCaseEnum wordCase) {
         StringBuilder sb = new StringBuilder();
         int firstDigit = number / 100;
-        sb.append(parsePartOfNumberToWord(firstDigit,NumberPartEnum.HUNDREDS,genderIndex,wordCase));
+        sb.append(parsePartOfNumberToWord(firstDigit, NumberPartEnum.HUNDREDS, genderIndex, wordCase));
 
         int lastTwoDigit = number % 100;
-        if (firstDigit!=0 && lastTwoDigit !=0){
+        if (firstDigit != 0 && lastTwoDigit != 0) {
             sb.append(" ");
         }
 
         if (lastTwoDigit >= 10 && lastTwoDigit <= 19) {
-            sb.append(parsePartOfNumberToWord(lastTwoDigit,NumberPartEnum.TEENS,genderIndex,wordCase));
-            sb.append(" ");
+            sb.append(parsePartOfNumberToWord(lastTwoDigit, NumberPartEnum.TEENS, genderIndex, wordCase));
         } else {
             int middleDigit = lastTwoDigit / 10;
-            sb.append(parsePartOfNumberToWord(middleDigit,NumberPartEnum.TENS,genderIndex,wordCase));
-            if( middleDigit!=0){
+            sb.append(parsePartOfNumberToWord(middleDigit, NumberPartEnum.TENS, genderIndex, wordCase));
+            if (middleDigit != 0) {
                 sb.append(" ");
             }
             int lastDigit = lastTwoDigit % 10;
-            sb.append(parsePartOfNumberToWord(lastDigit,NumberPartEnum.UNITS,genderIndex,wordCase));
-
+            sb.append(parsePartOfNumberToWord(lastDigit, NumberPartEnum.UNITS, genderIndex, wordCase));
         }
         return sb.toString();
     }
 
     private static String parsePartOfNumberToWord(int numberLessTwenty, NumberPartEnum numberPart,
                                                   Integer genderIndex, WordCaseEnum wordCase) {
-        if(numberLessTwenty==0) return "";
+        if (numberLessTwenty == 0) return "";
         StringBuilder sb = new StringBuilder();
         try {
-            HashMap<Integer, String> wordBeginnings= getSuitableBeginnings(numberPart);
+            HashMap<Integer, String> wordBeginnings = getSuitableBeginnings(numberPart);
             Method getEnding = methodWithEndingsByNumberPart.get(numberPart);
-            HashMap wordEndings= (HashMap) getEnding.invoke(null, numberLessTwenty);
+            HashMap wordEndings = (HashMap) getEnding.invoke(null, numberLessTwenty);
             sb.append(wordBeginnings.get(numberLessTwenty));
-            if (numberPart==NumberPartEnum.UNITS && numberLessTwenty>=1 && numberLessTwenty<=2){
+            if (numberPart == NumberPartEnum.UNITS && numberLessTwenty >= 1 && numberLessTwenty <= 2) {
                 String[] endingArrayByGender = (String[]) wordEndings.get(wordCase);
                 sb.append(endingArrayByGender[genderIndex]);
-            }
-            else {
+            } else {
                 String ending = (String) wordEndings.get(wordCase);
                 sb.append(ending);
             }
@@ -233,13 +230,12 @@ public class NumberToWordsParseHelper {
         return sb.toString();
     }
 
-    private static HashMap<Integer, String> getSuitableBeginnings(NumberPartEnum numberPart){
+    private static HashMap<Integer, String> getSuitableBeginnings(NumberPartEnum numberPart) {
         return switch (numberPart) {
             case UNITS -> unitsFirstPart;
             case TENS -> tensFirstPart;
             case TEENS -> teensFirstPart;
             case HUNDREDS -> hundredsFirstPart;
-            default -> throw new RuntimeException("Illegal argument with type enums.NumberPartEnum");
         };
     }
 
@@ -289,7 +285,7 @@ public class NumberToWordsParseHelper {
             return endingForThree;
         } else if (digit == 4) {
             return endingForFour;
-        } else if (digit >=5 && digit<=9) {
+        } else if (digit >= 5 && digit <= 9) {
             return endingForFromFiveToTwentyAndThirty;
         } else {
             throw new IllegalArgumentException(String.format(
